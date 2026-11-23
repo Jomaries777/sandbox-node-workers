@@ -18,7 +18,7 @@ describe("worker", () => {
     expect(await get("/")).toEqual({
       status: 200,
       type: "application/json; charset=utf-8",
-      body: { message: "hello" },
+      body: { message: "hello, world" },
     });
   });
 

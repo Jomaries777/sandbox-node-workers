@@ -43,7 +43,7 @@ describe("server", () => {
     const res = await fetch(`${baseUrl}/`);
     expect(res.status).toBe(200);
     expect(res.headers.get("content-type")).toContain("application/json");
-    expect(await res.json()).toEqual({ message: "hello" });
+    expect(await res.json()).toEqual({ message: "hello, world" });
   });
 
   it("GET /health returns default dev version when APP_VERSION is unset", async () => {

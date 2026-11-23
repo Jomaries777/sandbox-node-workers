@@ -12,7 +12,7 @@ describe("exportStatic", () => {
       .sort();
     expect(written).toEqual(["health/index.html", "index.html"]);
     expect(JSON.parse(readFileSync(join(dir, "index.html"), "utf8"))).toEqual({
-      message: "hello",
+      message: "hello, world",
     });
     expect(
       JSON.parse(readFileSync(join(dir, "health/index.html"), "utf8")).status,
