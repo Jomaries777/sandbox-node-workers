@@ -10,16 +10,7 @@ export interface Env {
 }
 
 export async function handle(request: Request, env: Env): Promise<Response> {
-  const { hostname, pathname } = new URL(request.url);
-  // DELIBERATE FAULT (M3 step 6, criterion 5): GET / fails only on the live
-  // workers.dev hosts. CI, unit tests and preview URLs (<8hex>-...) pass, so
-  // only release.sh's live check catches it and must auto-revert.
-  if (pathname === "/" && hostname.startsWith("sandbox-node-workers")) {
-    return new Response(JSON.stringify({ error: "deliberate fault" }), {
-      status: 500,
-      headers: { "content-type": "application/json; charset=utf-8" },
-    });
-  }
+  const { pathname } = new URL(request.url);
   const { status, body } = route(
     request.method,
     pathname,
