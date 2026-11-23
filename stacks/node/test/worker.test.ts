@@ -22,6 +22,19 @@ describe("worker", () => {
     });
   });
 
+  it("answers / with 200 on the live workers.dev hosts", async () => {
+    // Regression test for the deliberate live-host fault (M3 step 6): the
+    // live URLs must answer exactly like any other host.
+    for (const host of [
+      "sandbox-node-workers-dev.x7k2-apps.workers.dev",
+      "sandbox-node-workers.x7k2-apps.workers.dev",
+    ]) {
+      const res = await worker.fetch(new Request(`https://${host}/`), {});
+      expect(res.status).toBe(200);
+      expect(await res.json()).toEqual({ message: "hello, world" });
+    }
+  });
+
   it("reports the version from its bindings on /health", async () => {
     const res = await get("/health", { APP_VERSION: "abc1234" });
     expect(res.status).toBe(200);
