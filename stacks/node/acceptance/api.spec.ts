@@ -16,7 +16,7 @@ test("GET /health returns ok @prod-safe", async ({ request }) => {
 test("GET / returns hello @prod-safe", async ({ request }) => {
   const res = await request.get("");
   expect(res.status()).toBe(200);
-  expect(await res.json()).toEqual({ message: "hello" });
+  expect(await res.json()).toEqual({ message: "hello, world" });
 });
 
 test("GET /unknown returns 404 JSON", async ({ request }) => {
