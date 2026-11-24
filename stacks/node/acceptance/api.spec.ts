@@ -16,7 +16,21 @@ test("GET /health returns ok @prod-safe", async ({ request }) => {
 test("GET / returns hello @prod-safe", async ({ request }) => {
   const res = await request.get("");
   expect(res.status()).toBe(200);
-  expect(await res.json()).toEqual({ message: "hello, world" });
+  expect(await res.json()).toMatchObject({ message: "hello, world" });
+});
+
+test("every link in GET / resolves @prod-safe", async ({ request }) => {
+  const res = await request.get("");
+  expect(res.status()).toBe(200);
+  const { links = {} } = (await res.json()) as {
+    links?: Record<string, string>;
+  };
+  // Resolved against the page's own URL, the way a client follows a link.
+  for (const [name, href] of Object.entries(links)) {
+    const target = new URL(href, res.url()).toString();
+    const linked = await request.get(target);
+    expect(linked.status(), `${name}: ${target}`).toBe(200);
+  }
 });
 
 test("GET /unknown returns 404 JSON", async ({ request }) => {

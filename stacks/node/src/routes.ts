@@ -14,7 +14,11 @@ export function route(
   version: string = process.env.APP_VERSION ?? "dev",
 ): Response {
   if (method === "GET" && path === "/") {
-    return { status: 200, body: { message: "hello, world" } };
+    // Links to the service's other routes, so a client can find them.
+    return {
+      status: 200,
+      body: { message: "hello, world", links: { health: "/health" } },
+    };
   }
   // Not /healthz: Cloud Run reserves some paths that end in "z".
   if (method === "GET" && path === "/health") {
