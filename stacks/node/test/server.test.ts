@@ -43,7 +43,20 @@ describe("server", () => {
     const res = await fetch(`${baseUrl}/`);
     expect(res.status).toBe(200);
     expect(res.headers.get("content-type")).toContain("application/json");
-    expect(await res.json()).toEqual({ message: "hello, world" });
+    expect(await res.json()).toMatchObject({ message: "hello, world" });
+  });
+
+  it("every link in GET / resolves", async () => {
+    activeServer = createServer();
+    const baseUrl = await listen(activeServer);
+
+    const res = await fetch(`${baseUrl}/`);
+    const { links } = (await res.json()) as { links: Record<string, string> };
+    expect(Object.keys(links).length).toBeGreaterThan(0);
+    for (const href of Object.values(links)) {
+      const linked = await fetch(new URL(href, `${baseUrl}/`));
+      expect(linked.status, href).toBe(200);
+    }
   });
 
   it("GET /health returns default dev version when APP_VERSION is unset", async () => {

@@ -15,7 +15,7 @@ async function get(path: string, env = {}, method = "GET") {
 
 describe("worker", () => {
   it("answers / like the server", async () => {
-    expect(await get("/")).toEqual({
+    expect(await get("/")).toMatchObject({
       status: 200,
       type: "application/json; charset=utf-8",
       body: { message: "hello, world" },
@@ -31,7 +31,7 @@ describe("worker", () => {
     ]) {
       const res = await worker.fetch(new Request(`https://${host}/`), {});
       expect(res.status).toBe(200);
-      expect(await res.json()).toEqual({ message: "hello, world" });
+      expect(await res.json()).toMatchObject({ message: "hello, world" });
     }
   });
 

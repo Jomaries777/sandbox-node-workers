@@ -11,9 +11,9 @@ describe("exportStatic", () => {
       .map((f) => relative(dir, f))
       .sort();
     expect(written).toEqual(["health/index.html", "index.html"]);
-    expect(JSON.parse(readFileSync(join(dir, "index.html"), "utf8"))).toEqual({
-      message: "hello, world",
-    });
+    expect(
+      JSON.parse(readFileSync(join(dir, "index.html"), "utf8")),
+    ).toMatchObject({ message: "hello, world" });
     expect(
       JSON.parse(readFileSync(join(dir, "health/index.html"), "utf8")).status,
     ).toBe("ok");
