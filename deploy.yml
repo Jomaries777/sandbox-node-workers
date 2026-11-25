@@ -1,4 +1,4 @@
-target: github-pages
+target: cloudflare-workers
 stack: node
 environments:
   dev:        { enabled: true }
